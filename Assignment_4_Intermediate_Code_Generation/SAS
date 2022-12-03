@@ -1,0 +1,47 @@
+                \t;if ax<0 \n
+                \tor ax, ax \n
+                \tjge @end_if_1 ;no, <0 \n
+                
+                \tpush ax \n
+                \tmov dl, '-' \n
+                \tmov ah, 2 \n
+                \tint 21h \n
+                \tpop ax \n
+                \tneg ax \n
+                
+                \t;get decimal digits \n
+                \t@end_if_1: \n
+                \txor cx, cx \n
+                \tmov bx, 10d \n
+                
+                \t@repeat_2: \n
+                \txor dx, dx \n
+                \tdiv bx  ;ax = quotient , dx = remainder \n
+                \tpush dx ;save remainder on stack \n
+                \tinc cx  ;count = count + 1 \n
+                
+                \tor ax, ax ;until quotient = 0 \n
+                \tjne @repeat_2 \n
+                
+                \t;print digits \n
+                \tmov ah, 2 \n
+                
+                \t@print_loop: \n
+                \tpop dx ;digit in dl \n
+                \tor dl, 30h ;convert to ascii \n
+                \tint 21h \n
+                \tloop @print_loop  \n
+                
+                
+                \t;end_for \n
+
+                \tLEA DX,n_line ;lea means least effective address\n
+                \tMOV AH,9\n
+                \tINT 21H       ;print new line\n
+                \tpop dx \n
+                \tpop cx \n
+                \tpop bx \n
+                \tpop ax \n
+                
+                \tret \n
+                println endp\n\nEND MAIN \n

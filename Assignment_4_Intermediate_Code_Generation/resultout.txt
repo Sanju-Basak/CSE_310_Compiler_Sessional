@@ -1,0 +1,335 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+  i1_1 DW 0
+  j1_1 DW 0
+  k1_1 DW 0
+  m1_1 DW 0
+  n1_1 DW 0
+  ll1_1 DW 0
+  p1_1 DW 0
+  o1_1 DW 0
+	t0 DW 0
+	t1 DW 0
+	t2 DW 0
+	t3 DW 0
+	t4 DW 0
+	t5 DW 0
+	t6 DW 0
+	t7 DW 0
+	t8 DW 0
+	t9 DW 0
+	t10 DW 0
+	t11 DW 0
+	t12 DW 0
+	t13 DW 0
+	t14 DW 0
+	t15 DW 0
+.CODE
+
+MAIN PROC
+MOV AX, @DATA
+MOV DS, AX
+
+;1
+MOV AX, 1
+MOV t0, AX
+
+;i=1
+MOV AX, t0
+MOV i1_1, AX
+
+;println(i)
+CALL println
+
+;printing new line
+mov ah,2
+mov dl,10
+int 21h
+mov dl,13
+int 21h
+
+;5
+MOV AX, 5
+MOV t1, AX
+
+;8
+MOV AX, 8
+MOV t2, AX
+
+;5+8
+
+MOV AX, t1
+ADD AX, t2
+MOV t1, AX
+
+;j=5
+MOV AX, t1
+MOV j1_1, AX
+
+;println(j)
+CALL println
+
+;printing new line
+mov ah,2
+mov dl,10
+int 21h
+mov dl,13
+int 21h
+
+;i
+MOV AX, i1_1
+MOV t3, AX
+
+;2
+MOV AX, 2
+MOV t4, AX
+
+;j
+MOV AX, j1_1
+MOV t5, AX
+
+;2*j
+MOV AX, t4
+MOV BX, t5
+MUL BX
+MOV t4, AX
+
+;i+2
+
+MOV AX, t3
+ADD AX, t4
+MOV t3, AX
+
+;k=i
+MOV AX, t3
+MOV k1_1, AX
+
+;println(k)
+CALL println
+
+;printing new line
+mov ah,2
+mov dl,10
+int 21h
+mov dl,13
+int 21h
+
+;k
+MOV AX, k1_1
+MOV t6, AX
+
+;9
+MOV AX, 9
+MOV t7, AX
+
+;k%9
+MOV AX, t6
+MOV BX, t7
+XOR DX, DX
+DIV BX
+MOV t6, DX
+
+;m=k
+MOV AX, t6
+MOV m1_1, AX
+
+;println(m)
+CALL println
+
+;printing new line
+mov ah,2
+mov dl,10
+int 21h
+mov dl,13
+int 21h
+
+;m
+MOV AX, m1_1
+MOV t8, AX
+
+;ll
+MOV AX, ll1_1
+MOV t9, AX
+
+;m<=ll
+
+MOV AX, t8
+MOV BX, t9
+CMP AX, BX
+jle L0
+MOV t8, 0
+jmp L1
+L0:
+	MOV t8, 1
+L1:
+
+;n=m
+MOV AX, t8
+MOV n1_1, AX
+
+;println(n)
+CALL println
+
+;printing new line
+mov ah,2
+mov dl,10
+int 21h
+mov dl,13
+int 21h
+
+;n
+MOV AX, n1_1
+MOV t10, AX
+
+;o
+MOV AX, o1_1
+MOV t11, AX
+
+;n||o
+
+MOV AX, t10
+MOV BX, t11
+CMP AX, 0
+JNE L2
+CMP BX, 0
+JNE L2
+MOV t10, 0
+JMP L3
+L2:
+	MOV t10, 1
+L3:
+
+;p=n
+MOV AX, t10
+MOV p1_1, AX
+
+;println(p)
+CALL println
+
+;printing new line
+mov ah,2
+mov dl,10
+int 21h
+mov dl,13
+int 21h
+
+;n
+MOV AX, n1_1
+MOV t12, AX
+
+;o
+MOV AX, o1_1
+MOV t13, AX
+
+;n&&o
+
+MOV AX, t12
+MOV BX, t13
+CMP AX, 0
+JE L4
+CMP BX, 0
+JE L4
+MOV t12, 1
+JMP L5
+L4:
+	MOV t12, 0
+L5:
+
+;p=n
+MOV AX, t12
+MOV p1_1, AX
+
+;println(p)
+CALL println
+
+;printing new line
+mov ah,2
+mov dl,10
+int 21h
+mov dl,13
+int 21h
+
+;p++
+
+MOV AX, p1_1
+MOV t14, AX
+INC p1_1
+
+;println(p)
+CALL println
+
+;printing new line
+mov ah,2
+mov dl,10
+int 21h
+mov dl,13
+int 21h
+
+;p
+MOV AX, p1_1
+MOV t15, AX
+NEG t15
+
+;k=p
+MOV AX, t15
+MOV k1_1, AX
+
+;println(k)
+CALL println
+
+;printing new line
+mov ah,2
+mov dl,10
+int 21h
+mov dl,13
+int 21h
+
+MOV AH, 4CH
+INT 21H
+main ENDP
+
+;printing decimal number
+println proc 
+
+	;result is stored in ax 
+ 	push ax ;save registers 
+	push bx 
+	push cx 
+	push dx 
+	;if ax<0 
+	or ax, ax 
+	jge @end_if_1 ;no, <0 
+	push ax 
+	mov dl, '-' 
+	mov ah, 2 
+	int 21h 
+	pop ax 
+	neg ax 
+	;get decimal digits 
+	@end_if_1: 
+	xor cx, cx 
+	mov bx, 10d 
+	@repeat_2: 
+	xor dx, dx 
+	div bx  ;ax = quotient , dx = remainder 
+	push dx ;save remainder on stack 
+	inc cx  ;count = count + 1 
+	or ax, ax ;until quotient = 0 
+	jne @repeat_2 
+	;print digits 
+	mov ah, 2 
+	@print_loop: 
+	pop dx ;digit in dl 
+	or dl, 30h ;convert to ascii 
+	int 21h 
+	loop @print_loop  
+	;end_for
+	pop dx 
+	pop cx 
+	pop bx 
+	pop ax 
+	ret 
+println endp
+
+END MAIN 
